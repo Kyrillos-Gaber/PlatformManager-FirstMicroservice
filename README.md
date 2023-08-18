@@ -12,3 +12,6 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 
 ### create k8s secret for ms SQL
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="pa55w0rd!"
+
+### to run fresh new image
+kubectl rollout restart deployment <image-name>
