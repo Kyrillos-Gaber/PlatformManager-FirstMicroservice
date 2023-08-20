@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlatformManager.CommandService.Data;
 using PlatformManager.CommandService.Dtos;
+using PlatformManager.CommandService.Models;
+using System.ComponentModel.Design;
 
 namespace PlatformManager.CommandService.Controllers;
 
@@ -43,5 +45,25 @@ public class CommandsController : ControllerBase
             return NotFound();
 
         return Ok(_mapper.Map<CommandReadDto>(command));
+    }
+
+    [HttpPost]
+    public ActionResult<CommandReadDto> CreateCommandFromPlat(int platformId, CommandCreateDto commandCreate)
+    {
+        Console.WriteLine($"--> create command by platform id: {platformId} from controllers");
+
+        if (!_commandRepo.PlatfromExists(platformId))
+            return NotFound();
+
+        var command = _mapper.Map<Command>(commandCreate);
+        
+        _commandRepo.CreateCommand(platformId, command);
+        
+        bool res = _commandRepo.SaveChanges();
+
+        return CreatedAtRoute(nameof(GetCommandForPlatform), 
+            new {platformId = platformId, commandId = command.Id}, 
+            _mapper.Map<CommandReadDto>(command));
+
     }
 }
