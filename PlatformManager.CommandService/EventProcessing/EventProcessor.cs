@@ -30,6 +30,7 @@ public class EventProcessor : IEventProcessor
         switch(eventType)
         {
             case EventType.PlatfomrPublished:
+                AddPlatform(message);
                 break;
             default:
                 break;
@@ -52,6 +53,7 @@ public class EventProcessor : IEventProcessor
                 {
                     repo.CreatePlatfrom(plat);
                     repo.SaveChanges();
+                    Console.WriteLine("platform added successfully");
                 }
                 else
                     Console.WriteLine("platform exists...");
@@ -65,8 +67,9 @@ public class EventProcessor : IEventProcessor
 
     private EventType DetermineEvent(string notificationMessage)
     {
-        Console.WriteLine("--> Determinig Event");
+        Console.WriteLine($"--> Determinig Event: {notificationMessage}");
         GenericEventDto? eventType = JsonSerializer.Deserialize<GenericEventDto>(notificationMessage);
+        Console.WriteLine($"--> Event Type: {eventType!.Event}");
         
         switch(eventType!.Event)
         {

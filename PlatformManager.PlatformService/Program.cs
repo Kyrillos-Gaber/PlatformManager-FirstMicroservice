@@ -44,7 +44,7 @@ if (app.Environment.IsDevelopment())
 
 app.PrepPopulation();
 
-/*app.UseHttpsRedirection();*/
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

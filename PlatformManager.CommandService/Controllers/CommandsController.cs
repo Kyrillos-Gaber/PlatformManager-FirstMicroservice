@@ -28,8 +28,9 @@ public class CommandsController : ControllerBase
 
         if (!_commandRepo.PlatfromExists(platformId))
             return NotFound();
-
-        return Ok(_mapper.Map<CommandReadDto>(_commandRepo.GetCommandsForPlatfrom(platformId)));
+        var command = _commandRepo.GetCommandsForPlatfrom(platformId);
+        
+        return Ok(_mapper.Map<IEnumerable<CommandReadDto>>(command));
     }
 
     [HttpGet("{commandId:int}", Name = "GetCommandForPlatform")]
