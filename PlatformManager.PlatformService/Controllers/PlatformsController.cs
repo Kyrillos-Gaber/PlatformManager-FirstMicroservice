@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlatformManager.PlatformService.AsyncDataServices;
 using PlatformManager.PlatformService.Data;
 using PlatformManager.PlatformService.Dto;
 using PlatformManager.PlatformService.Models;
@@ -15,12 +16,18 @@ namespace PlatformManager.PlatformService.Controllers
         private readonly IPlatformRepo _platformRepo;
         private readonly IMapper _mapper;
         private readonly ICommandDataClient _commandDataClient;
+        private readonly IMessageBusClient _messageBusClient;
 
-        public PlatformsController(IPlatformRepo platformRepo, IMapper mapper, ICommandDataClient commandDataClient)
+        public PlatformsController(
+            IPlatformRepo platformRepo, 
+            IMapper mapper, 
+            ICommandDataClient commandDataClient,
+            IMessageBusClient messageBusClient)
         {
             _platformRepo = platformRepo;
             _mapper = mapper;
             _commandDataClient = commandDataClient;
+            _messageBusClient = messageBusClient;
         }
 
         [HttpGet]
@@ -47,7 +54,8 @@ namespace PlatformManager.PlatformService.Controllers
             _platformRepo.SaveChange();
 
             var platformReadDto = _mapper.Map<PlatformReadDto>(platform);
-
+            
+            // sending sync message
             try
             {
                 await _commandDataClient.SendPlatformToCommand(platformReadDto);
@@ -56,6 +64,18 @@ namespace PlatformManager.PlatformService.Controllers
             {
 
                 Console.WriteLine($"FAILD to send sync {ex.Message}");
+            }
+
+            // sending async message
+            try
+            {
+                var platformPublishedDto = _mapper.Map<PlatformPublishedDto>(platformReadDto);
+                platformPublishedDto.Event = "Platfomr Published";
+                _messageBusClient.PublishNewPlatfomr(platformPublishedDto);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"--> FAILD to send Async {ex.Message}");
             }
 
             return CreatedAtRoute(nameof(GetPlatform), new { id = platform.Id }, platformReadDto);
