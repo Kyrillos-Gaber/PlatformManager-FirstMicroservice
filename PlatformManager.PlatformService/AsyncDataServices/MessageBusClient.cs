@@ -16,22 +16,18 @@ public class MessageBusClient : IMessageBusClient
     {
         _configuration = configuration;
 
+        var factory = new ConnectionFactory()
+        {
+            HostName = _configuration["RabbitMQHost"],
+            Port = int.Parse(_configuration["RabbitMQPort"]!)
+        };
+        
         try
         {
-            var factory = new ConnectionFactory()
-            {
-                HostName = _configuration["RabbitMQHost"],
-                Port = int.Parse(_configuration["RabbitMQPort"]!)
-            };
-            Console.WriteLine($"host: {factory.HostName}, port: {factory.Port}, vh: {factory.VirtualHost}, uri{factory.Uri}, {factory.AmqpUriSslProtocols}, {factory}");
-            Console.WriteLine(0);
             _connection = factory.CreateConnection();
-            Console.WriteLine(1);
             _channel = _connection.CreateModel();
-            Console.WriteLine(2);
 
             _channel.ExchangeDeclare(exchange: trigger, type: ExchangeType.Fanout);
-            Console.WriteLine(3);
 
             _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
 
