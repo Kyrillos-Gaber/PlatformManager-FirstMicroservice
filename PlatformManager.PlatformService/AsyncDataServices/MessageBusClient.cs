@@ -71,7 +71,7 @@ public class MessageBusClient : IMessageBusClient
             routingKey: "",
             basicProperties: null,
             body: body);
-        Console.WriteLine($"--> We have sent message: {message},\nEncoded: {body}");
+        Console.WriteLine($"--> We have sent message: {message},\nEncoded: {body[0]}");
     }
 
     public void Dispose()

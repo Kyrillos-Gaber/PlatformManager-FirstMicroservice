@@ -1,4 +1,5 @@
 ﻿using PlatformManager.CommandService.Models;
+using System;
 
 namespace PlatformManager.CommandService.Data;
 
@@ -24,6 +25,11 @@ public class CommandRepo : ICommandRepo
         if (platform is null)
             throw new ArgumentNullException(nameof(platform));
         _context.Platforms.Add(platform);
+    }
+
+    public bool ExternalPlatformExist(int externalPlatformId)
+    {
+        return _context.Platforms.Any(p => p.ExternalID == externalPlatformId);
     }
 
     public IEnumerable<Platform> GetAllPlatforms()
