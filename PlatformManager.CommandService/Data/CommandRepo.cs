@@ -34,7 +34,8 @@ public class CommandRepo : ICommandRepo
 
     public IEnumerable<Platform> GetAllPlatforms()
     {
-        return _context.Platforms.ToList();
+        var result = _context.Platforms.OrderBy(p => p.Id);
+        return result.ToList();
     }
 
     public Command GetCommand(int platformId, int commandId)

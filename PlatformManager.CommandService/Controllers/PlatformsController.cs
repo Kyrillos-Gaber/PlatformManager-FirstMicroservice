@@ -23,8 +23,8 @@ namespace PlatformManager.CommandService.Controllers
         public ActionResult<IEnumerable<PlatformReadDto>> GetPlatforms()
         {
             Console.WriteLine("--> getting platforms from controllers");
-
-            return Ok(_mapper.Map<PlatformReadDto>(_commandRepo.GetAllPlatforms()));
+            var res = _commandRepo.GetAllPlatforms();
+            return Ok(_mapper.Map<IEnumerable<PlatformReadDto>>(res));
         }
 
         [HttpPost]
