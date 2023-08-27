@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PlatformManager.PlatformService.AsyncDataServices;
 using PlatformManager.PlatformService.Data;
+using PlatformManager.PlatformService.SyncDataService.Grpc;
 using PlatformManager.PlatformService.SyncDataService.Http;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
+builder.Services.AddGrpc();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,5 +52,10 @@ app.PrepPopulation();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGrpcService<GrpcPlatformService>();
+
+app.MapGet("/protos/platforms.proto", async context =>
+    await context.Response.WriteAsync(File.ReadAllText("Protos/platforms.proto")));
 
 app.Run();

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PlatformManager.CommandService.AsyncDataServices;
 using PlatformManager.CommandService.Data;
 using PlatformManager.CommandService.EventProcessing;
+using PlatformManager.CommandService.SyncDataServices.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Services.AddScoped<ICommandRepo, CommandRepo>();
 builder.Services.AddHostedService<MessageBusSubscriber>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IPlatformDataClient, PlatformDataClient>();
 
 builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 
