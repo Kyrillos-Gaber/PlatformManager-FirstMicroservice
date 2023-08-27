@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "35465411-a828-4bf1-94b3-0e3f951e4115",
+		"name": "First Microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25597767",
+		"_collection_link": "https://interstellar-rocket-967575.postman.co/workspace/My-Workspace~7a36f198-ff07-47f5-8131-c66286f88256/collection/25597767-35465411-a828-4bf1-94b3-0e3f951e4115?action=share&source=collection_link&creator=25597767"
+	},
+	"item": [
+		{
+			"name": "command",
+			"item": [
+				{
+					"name": "create command",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"howto\" : \"push a docker container\",\r\n    \"commandline\" : \"dotnet build\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}/api/c/Platforms/1/Commands",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"c",
+								"Platforms",
+								"1",
+								"Commands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get platforms",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/c/Platforms",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"c",
+								"Platforms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Commands by Platform id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/c/Platforms/1/Commands",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"c",
+								"Platforms",
+								"1",
+								"Commands"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "platform",
+			"item": [
+				{
+					"name": "http://acme.com/api/Platforms",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"k8s\",\r\n    \"publisher\" : \"kyro\",\r\n    \"cost\" : \"234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}/api/Platforms",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Platforms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get platforms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/Platforms",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"Platforms"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
